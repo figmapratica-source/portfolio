@@ -175,11 +175,29 @@ form { margin-top: 64px; display: grid; gap: 30px; }
   body.mobile-scroll-mode .hero { min-height: 0; padding: 20px 0 36px; gap: 22px; }
   body.mobile-scroll-mode .eyebrow { margin-bottom: 24px; }
   body.mobile-scroll-mode .tiles { gap: 14px; }
-  body.mobile-scroll-mode #service-tiles { display: block; position: relative; padding-bottom: 10px; }
-  body.mobile-scroll-mode #service-tiles .tile { position: sticky; top: 112px; margin-bottom: 14px; aspect-ratio: 4 / 3; box-shadow: 0 8px 24px rgba(18,18,17,.06); transform-origin: center top; }
+  /* Section headings stay pinned while each card sequence passes beneath them. */
+  body.mobile-scroll-mode .view > .eyebrow {
+    position: sticky; top: 106px; z-index: 12;
+    padding: 8px 0 12px; margin: 0 0 18px;
+    background: var(--stage);
+  }
+  body.mobile-scroll-mode #project-tiles,
+  body.mobile-scroll-mode #service-tiles {
+    display: block; position: relative; padding-bottom: 8px;
+  }
+  body.mobile-scroll-mode #project-tiles .tile,
+  body.mobile-scroll-mode #service-tiles .tile {
+    position: sticky; top: 158px; margin-bottom: 14px;
+    aspect-ratio: 4 / 3; box-shadow: 0 8px 24px rgba(18,18,17,.06);
+    transform-origin: center top;
+  }
+  body.mobile-scroll-mode #project-tiles .tile:nth-child(1),
   body.mobile-scroll-mode #service-tiles .tile:nth-child(1) { z-index: 1; }
+  body.mobile-scroll-mode #project-tiles .tile:nth-child(2),
   body.mobile-scroll-mode #service-tiles .tile:nth-child(2) { z-index: 2; }
+  body.mobile-scroll-mode #project-tiles .tile:nth-child(3),
   body.mobile-scroll-mode #service-tiles .tile:nth-child(3) { z-index: 3; }
+  body.mobile-scroll-mode #project-tiles .tile:nth-child(4),
   body.mobile-scroll-mode #service-tiles .tile:nth-child(4) { z-index: 4; }
   body.mobile-scroll-mode #view-contact { min-height: auto; padding-bottom: 30px; }
   body.mobile-scroll-mode .contact { padding-top: 12px; }
@@ -364,21 +382,37 @@ function setActiveNav(name) {
     else a.removeAttribute("aria-current");
   });
 }
+function updateMobileScrollState() {
+  if (!mobileQuery.matches || !document.body.classList.contains("mobile-scroll-mode")) return;
+  // Use one stable viewport line rather than intersection ratios, which can flicker
+  // when two long sections are visible at the same time.
+  const activationLine = Math.min(window.innerHeight * 0.34, 260);
+  let active = VIEWS[0];
+  for (const name of VIEWS) {
+    const section = document.getElementById("view-" + name);
+    if (section.getBoundingClientRect().top <= activationLine) active = name;
+    else break;
+  }
+  setActiveNav(active);
+  const contact = document.getElementById("view-contact");
+  const nav = document.getElementById("nav");
+  const contactTop = contact.getBoundingClientRect().top;
+  // Hide once Contact reaches the capsule; keep it hidden through the section
+  // and restore it naturally when scrolling back above Contact.
+  nav.classList.toggle("nav-away", contactTop <= 112);
+}
+function queueMobileScrollState() {
+  if (scrollSpyTicking) return;
+  scrollSpyTicking = true;
+  requestAnimationFrame(() => {
+    updateMobileScrollState();
+    scrollSpyTicking = false;
+  });
+}
 function enableMobileScrollMode() {
   document.body.classList.add("mobile-scroll-mode");
   VIEWS.forEach(v => { document.getElementById("view-" + v).hidden = false; });
-  if (mobileObserver) mobileObserver.disconnect();
-  mobileObserver = new IntersectionObserver(entries => {
-    const visible = entries.filter(entry => entry.isIntersecting)
-      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-    if (visible) setActiveNav(visible.target.id.replace("view-", ""));
-    const contact = document.getElementById("view-contact");
-    const nav = document.getElementById("nav");
-    const contactRect = contact.getBoundingClientRect();
-    // Let the contact section breathe at the end of the page; the capsule glides away rather than covering the form.
-    nav.classList.toggle("nav-away", contactRect.top < 118 && contactRect.bottom > 150);
-  }, { root: null, rootMargin: "-22% 0px -48% 0px", threshold: [0, .1, .25, .5, .75] });
-  VIEWS.forEach(v => mobileObserver.observe(document.getElementById("view-" + v)));
+  queueMobileScrollState();
 }
 function disableMobileScrollMode() {
   document.body.classList.remove("mobile-scroll-mode");
@@ -424,6 +458,8 @@ document.addEventListener("click", e => {
   try { history.replaceState(null, "", "#" + name); } catch (_) {}
 });
 syncResponsiveMode();
+window.addEventListener("scroll", queueMobileScrollState, { passive: true });
+window.addEventListener("resize", queueMobileScrollState, { passive: true });
 if (mobileQuery.matches) {
   const initial = VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "myself";
   if (initial !== "myself") requestAnimationFrame(() => show(initial, true));
