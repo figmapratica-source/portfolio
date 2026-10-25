@@ -70,8 +70,12 @@ a { color: inherit; }
 }
 .rail-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .brand { font-family: var(--serif); font-weight: 400; font-size: 22px; letter-spacing: .06em; text-transform: uppercase; text-decoration: none; white-space: nowrap; }
-.burger { width: 34px; height: 28px; border: 0; border-radius: 4px; background: transparent; padding: 5px 0; cursor: pointer; display: grid; align-content: space-between; flex: none; transition: background .2s, transform .2s; }\n.burger:hover { transform: scale(.96); }\n.burger:focus-visible { outline: 2px solid var(--ink); outline-offset: 5px; }
-.burger span { display: block; height: 3px; width: 100%; background: var(--ink); transition: transform .3s ease, opacity .2s ease, width .2s ease; }\n.burger span:nth-child(2) { width: 76%; justify-self: end; }\n.burger:hover span:nth-child(2) { width: 100%; }
+.burger { width: 34px; height: 28px; border: 0; border-radius: 4px; background: transparent; padding: 5px 0; cursor: pointer; display: grid; align-content: space-between; flex: none; transition: background .2s, transform .2s; }
+.burger:hover { transform: scale(.96); }
+.burger:focus-visible { outline: 2px solid var(--ink); outline-offset: 5px; }
+.burger span { display: block; height: 3px; width: 100%; background: var(--ink); transition: transform .3s ease, opacity .2s ease, width .2s ease; }
+.burger span:nth-child(2) { width: 76%; justify-self: end; }
+.burger:hover span:nth-child(2) { width: 100%; }
 .burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
 .burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
 .burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
@@ -89,7 +93,8 @@ a { color: inherit; }
 .nav a .lbl { font-family: var(--sans); font-weight: 600; transition: opacity .25s; }
 .nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -8px; height: 2px; background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform .3s ease; }
 .nav a:hover::after, .nav a[aria-current="page"]::after { transform: scaleX(1); }
-.nav a[aria-current="page"] { font-family: var(--sans); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }\n.nav a[aria-current="page"] .lbl { font-family: var(--sans); font-weight: 700; font-style: normal; text-transform: uppercase; letter-spacing: .04em; font-size: 1em; }
+.nav a[aria-current="page"] { font-family: var(--sans); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.nav a[aria-current="page"] .lbl { font-family: var(--sans); font-weight: 700; font-style: normal; text-transform: uppercase; letter-spacing: .04em; font-size: 1em; }
 .collapsed .nav { padding-left: 0; }
 .collapsed .nav .lbl, .collapsed .nav .dot { opacity: 0; }
 .rail-foot { margin-top: auto; font-size: 13px; color: var(--muted); letter-spacing: .04em; }
