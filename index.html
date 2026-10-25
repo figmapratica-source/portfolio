@@ -25,6 +25,7 @@
   --serif: "Instrument Serif", "Times New Roman", Georgia, serif;
   --sans: "Segoe UI", Segoe, Tahoma, Arial, sans-serif;
   --rail-w: clamp(240px, 27vw, 432px);
+  --hold: clamp(56px, 12svh, 110px); /* scroll distance each card is held before the next one covers it */
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
@@ -52,7 +53,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
-button, input, textarea { font: inherit; color: inherit; }
+button, input, textarea, select { font: inherit; color: inherit; }
 a { color: inherit; }
 :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
@@ -118,7 +119,7 @@ a { color: inherit; }
 .hero .role { margin: 0; font-size: clamp(19px, 1.6vw, 24px); font-weight: 400; color: #000; }
 .hero .pitch { margin: 0 auto; max-width: 58ch; font-size: clamp(17px, 1.4vw, 21px); font-weight: 300; color: #121211; text-wrap: balance; }
 .hero .ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
-.btn { border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; padding: 14px 24px; border: 1.5px solid var(--ink); background: transparent; font-weight: 600; font-size: 15px; letter-spacing: .04em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: background .2s, color .2s; }
+.btn { border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; padding: 10px 20px; border: 1.5px solid var(--ink); background: transparent; font-weight: 600; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: background .2s, color .2s; }
 .btn:hover { background: var(--ink); color: var(--stage); }
 .btn.solid { background: var(--invert-bg); color: var(--invert-fg); border-color: var(--invert-bg); }
 .btn.solid:hover { background: transparent; color: var(--ink); }
@@ -134,11 +135,9 @@ a { color: inherit; }
 .tile .meta { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; }
 .tile h3 { margin: 0; font-family: var(--serif); font-weight: 400; color: #000; font-size: clamp(26px, 2.8vw, 40px); line-height: 1.1; min-width: 0; }
 .tile .tag { display: block; font-family: var(--sans); font-weight: 600; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-.see { flex: none; border: 0; border-radius: 12px; background: var(--chip); color: #0d0d0d; font-family: var(--serif); font-weight: 400; font-size: 21px; line-height: 1.2; padding: 12px 30px; cursor: pointer; transition: background .2s, color .2s; }
-.see:hover { background: var(--invert-bg); color: var(--invert-fg); }
-/* Project "See" buttons: orange accent with white text (hover swaps to the light chip so it still reads as interactive) */
-#project-tiles .see { background: var(--ink); color: #fff; }
-#project-tiles .see:hover { background: var(--chip); color: var(--ink); }
+.see { flex: none; border: 0; border-radius: 12px; background: var(--ink); color: #fff; font-family: var(--serif); font-weight: 400; font-size: 18px; line-height: 1.2; padding: 8px 20px; cursor: pointer; transition: background .2s, color .2s; }
+/* Orange accent with white text in both sections (hover swaps to the light chip so it still reads as interactive) */
+.see:hover { background: var(--chip); color: var(--ink); }
 /* Final card + its button carry no shadow */
 #project-tiles .tile:last-child, #service-tiles .tile:last-child,
 #project-tiles .tile:last-child .see, #service-tiles .tile:last-child .see { box-shadow: none; filter: none; }
@@ -151,15 +150,17 @@ a { color: inherit; }
 form { margin-top: 64px; display: grid; gap: 30px; }
 .field { display: grid; grid-template-columns: 150px minmax(0, 1fr); align-items: end; gap: 24px; }
 .field label { font-family: var(--sans); font-weight: 600; font-size: clamp(17px, 1.5vw, 22px); text-transform: uppercase; letter-spacing: .02em; white-space: nowrap; }
-.field input, .field textarea { font-weight: 400; width: 100%; border: 0; border-bottom: 1.5px solid var(--line); background: transparent; padding: 6px 2px; font-size: 18px; border-radius: 0; resize: none; }
+.field input, .field textarea, .field select { font-weight: 400; width: 100%; border: 0; border-bottom: 1.5px solid var(--line); background: transparent; padding: 6px 2px; font-size: 18px; border-radius: 0; resize: none; }
 .field textarea { min-height: 36px; field-sizing: content; max-height: 220px; }
-.field input:focus, .field textarea:focus { outline: none; border-bottom-width: 3px; }
+.field select { -webkit-appearance: none; appearance: none; padding-right: 30px; cursor: pointer; text-overflow: ellipsis; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23121211' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 4px center; background-size: 16px; }
+.field select option { color: #121211; background: #fff; }
+.field input:focus, .field textarea:focus, .field select:focus { outline: none; border-bottom-width: 3px; }
 .form-foot { margin-top: 70px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
 .socials { display: flex; gap: 44px; flex-wrap: wrap; }
 .socials a { color: #000; width: 56px; height: 56px; background: var(--tile); display: grid; place-items: center; font-size: 14px; font-weight: 700; letter-spacing: .04em; text-decoration: none; transition: background .2s, color .2s; }
 .socials a svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
 .socials a:hover { background: var(--invert-bg); color: var(--invert-fg); }
-.submit { border: 0; border-radius: 12px; background: var(--invert-bg); color: var(--invert-fg); font-size: 22px; letter-spacing: .02em; padding: 14px 24px; cursor: pointer; transition: transform .2s; }
+.submit { border: 0; border-radius: 12px; background: var(--invert-bg); color: var(--invert-fg); font-size: 16px; letter-spacing: .02em; padding: 10px 24px; cursor: pointer; transition: transform .2s; }
 .submit:hover { transform: translateY(-2px); }
 .status { min-height: 1.5em; margin: 0; font-size: 15px; color: var(--ink-soft); }
 .status.error { color: #D92D20; }
@@ -207,20 +208,28 @@ form { margin-top: 64px; display: grid; gap: 30px; }
   body.mobile-scroll-mode #service-tiles {
     display: block; position: relative; padding-bottom: 8px;
   }
+  /* Folder-style stack: each card pins a little lower than the one before, so the cards beneath show as tabs. */
   body.mobile-scroll-mode #project-tiles .tile,
   body.mobile-scroll-mode #service-tiles .tile {
-    position: sticky; top: 158px; margin-bottom: 14px;
-    aspect-ratio: 4 / 3; box-shadow: 0 8px 24px rgba(18,18,17,.06);
+    position: sticky; top: calc(158px + var(--n, 0) * 12px); margin: 0;
+    aspect-ratio: 4 / 3; min-height: 200px; max-height: calc(100svh - 158px - 36px - 28px);
+    box-shadow: 0 8px 24px rgba(18,18,17,.06);
+    outline: 1px solid rgba(18,18,17,.07); outline-offset: -1px;
     transform-origin: center top;
   }
+  body.mobile-scroll-mode #project-tiles .tile + .tile,
+  body.mobile-scroll-mode #service-tiles .tile + .tile { margin-top: var(--hold); }
+  /* Hold space after the last card so the finished stack rests fully in view before it scrolls away. */
+  body.mobile-scroll-mode #project-tiles::after,
+  body.mobile-scroll-mode #service-tiles::after { content: ""; display: block; height: var(--hold); }
   body.mobile-scroll-mode #project-tiles .tile:nth-child(1),
-  body.mobile-scroll-mode #service-tiles .tile:nth-child(1) { z-index: 1; }
+  body.mobile-scroll-mode #service-tiles .tile:nth-child(1) { --n: 0; z-index: 1; }
   body.mobile-scroll-mode #project-tiles .tile:nth-child(2),
-  body.mobile-scroll-mode #service-tiles .tile:nth-child(2) { z-index: 2; }
+  body.mobile-scroll-mode #service-tiles .tile:nth-child(2) { --n: 1; z-index: 2; }
   body.mobile-scroll-mode #project-tiles .tile:nth-child(3),
-  body.mobile-scroll-mode #service-tiles .tile:nth-child(3) { z-index: 3; }
+  body.mobile-scroll-mode #service-tiles .tile:nth-child(3) { --n: 2; z-index: 3; }
   body.mobile-scroll-mode #project-tiles .tile:nth-child(4),
-  body.mobile-scroll-mode #service-tiles .tile:nth-child(4) { z-index: 4; }
+  body.mobile-scroll-mode #service-tiles .tile:nth-child(4) { --n: 3; z-index: 4; }
   /* Last card: no shadow on the card or its button */
   body.mobile-scroll-mode #project-tiles .tile:last-child,
   body.mobile-scroll-mode #service-tiles .tile:last-child,
@@ -231,7 +240,7 @@ form { margin-top: 64px; display: grid; gap: 30px; }
   body.mobile-scroll-mode form { gap: 26px; margin-top: 42px; }
   body.mobile-scroll-mode .form-foot { flex-direction: column; align-items: center; justify-content: center; gap: 24px; margin-top: 42px; }
   body.mobile-scroll-mode .socials { width: 100%; justify-content: center; gap: 14px; }
-  body.mobile-scroll-mode .submit { align-self: center; min-width: 160px; }
+  body.mobile-scroll-mode .submit { align-self: center; min-width: 130px; }
   body.mobile-scroll-mode .status { text-align: center; }
 }
 
@@ -274,7 +283,7 @@ form { margin-top: 64px; display: grid; gap: 30px; }
 @media (max-width: 560px) {
   .tiles { grid-template-columns: minmax(0, 1fr); }
   .tile { aspect-ratio: 4 / 3; padding: 18px; }
-  .see { padding: 10px 22px; font-size: 19px; }
+  .see { padding: 7px 16px; font-size: 17px; }
 }
 
 @media (max-width: 380px) {
@@ -294,7 +303,7 @@ form { margin-top: 64px; display: grid; gap: 30px; }
     position: fixed; inset: 0 0 auto 0; height: var(--bar-h); z-index: 50;
     display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; column-gap: 24px;
     padding: 0 max(36px, env(safe-area-inset-right, 0px)) 0 max(36px, env(safe-area-inset-left, 0px));
-    overflow: visible; border-right: 0; border-bottom: 1px solid rgba(18,18,17,.08);
+    overflow: visible; border-right: 0;
     background: rgba(255,253,250,.94); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
   }
   .rail-top { display: contents; }
@@ -318,7 +327,7 @@ form { margin-top: 64px; display: grid; gap: 30px; }
   .nav a[aria-current="page"] { color: var(--ink); background: rgba(251,98,3,.09); font-family: var(--sans); font-size: 14px; font-weight: 700; letter-spacing: .01em; text-transform: none; }
   .nav a[aria-current="page"] .lbl { font-family: var(--sans); font-size: 1em; font-weight: 700; text-transform: none; letter-spacing: .01em; }
   .collapsed .nav .lbl { opacity: 1; }
-  .rail .connect { display: inline-flex; grid-column: 3; grid-row: 1; justify-self: end; padding: 11px 24px; font-size: 14px; }
+  .rail .connect { display: inline-flex; grid-column: 3; grid-row: 1; justify-self: end; padding: 8px 18px; font-size: 13px; }
 
   /* All sections live on one scrolling page */
   .stage { padding-block: var(--bar-h) 64px; }
@@ -335,14 +344,18 @@ form { margin-top: 64px; display: grid; gap: 30px; }
   /* Cards stack one after another while scrolling */
   #project-tiles, #service-tiles { display: block; position: relative; padding-bottom: 8px; margin-inline: auto; }
   #project-tiles .tile, #service-tiles .tile {
-    position: sticky; top: calc(var(--bar-h) + var(--head-h)); margin-bottom: 24px; padding: 28px;
-    aspect-ratio: 16 / 9; min-height: 300px; max-height: calc(100svh - var(--bar-h) - var(--head-h) - 40px);
-    box-shadow: 0 8px 24px rgba(18,18,17,.06); transform-origin: center top;
+    position: sticky; top: calc(var(--bar-h) + var(--head-h) + var(--n, 0) * 16px); margin: 0; padding: 28px;
+    aspect-ratio: 16 / 9; min-height: 280px; max-height: calc(100svh - var(--bar-h) - var(--head-h) - 48px - 28px);
+    box-shadow: 0 8px 24px rgba(18,18,17,.06);
+    outline: 1px solid rgba(18,18,17,.07); outline-offset: -1px;
+    transform-origin: center top;
   }
-  #project-tiles .tile:nth-child(1), #service-tiles .tile:nth-child(1) { z-index: 1; }
-  #project-tiles .tile:nth-child(2), #service-tiles .tile:nth-child(2) { z-index: 2; }
-  #project-tiles .tile:nth-child(3), #service-tiles .tile:nth-child(3) { z-index: 3; }
-  #project-tiles .tile:nth-child(4), #service-tiles .tile:nth-child(4) { z-index: 4; }
+  #project-tiles .tile + .tile, #service-tiles .tile + .tile { margin-top: var(--hold); }
+  #project-tiles::after, #service-tiles::after { content: ""; display: block; height: var(--hold); }
+  #project-tiles .tile:nth-child(1), #service-tiles .tile:nth-child(1) { --n: 0; z-index: 1; }
+  #project-tiles .tile:nth-child(2), #service-tiles .tile:nth-child(2) { --n: 1; z-index: 2; }
+  #project-tiles .tile:nth-child(3), #service-tiles .tile:nth-child(3) { --n: 2; z-index: 3; }
+  #project-tiles .tile:nth-child(4), #service-tiles .tile:nth-child(4) { --n: 3; z-index: 4; }
 
   /* Contact footer: © line sits directly under the social icons */
   #view-contact { min-height: auto; padding-bottom: 30px; }
@@ -411,11 +424,12 @@ form { margin-top: 64px; display: grid; gap: 30px; }
         <form id="contact-form" novalidate>
           <div class="field"><label for="f-name">Name :</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
           <div class="field"><label for="f-email">Email :</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="f-looking">Looking for :</label><select id="f-looking" name="looking_for" required><option value="" selected disabled hidden></option><option value="Website">Website</option><option value="Shopify Store">Shopify Store</option><option value="Branding">Branding</option><option value="Meta Ads">Meta Ads</option></select></div>
           <div class="field"><label for="f-msg">Message :</label><textarea id="f-msg" name="message" rows="1" required></textarea></div>
           <p class="status" id="status" role="status"></p>
           <div class="form-foot">
             <div class="socials">
-              <a href="https://www.behance.net/" target="_blank" rel="noopener" aria-label="Behance"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.5h6a3 3 0 0 1 0 6h-6z"/><path d="M2.5 11.5h7a3.25 3.25 0 0 1 0 6.5h-7z"/><path d="M14.5 6h6"/><path d="M21.2 14.8h-6.7a3 3 0 1 0 .7 3.3"/></svg></a>
+              <a href="https://www.behance.net/" target="_blank" rel="noopener" aria-label="Behance"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h5a3 3 0 0 1 0 6H3z"/><path d="M3 12h6a3 3 0 0 1 0 6H3z"/><path d="M14 7h7"/><path d="M14 15h7a3.5 3.5 0 0 0-7 0 3.5 3.5 0 0 0 6.37 2"/></svg></a>
               <a href="https://dribbble.com/" target="_blank" rel="noopener" aria-label="Dribbble"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M19.13 5.09C15.22 9.14 10 10.44 2.25 10.94"/><path d="M21.75 12.84c-6.62-1.41-12.14 1-16.38 6.32"/><path d="M8.56 2.75c4.37 6 6 9.42 8 17.72"/></svg></a>
               <a href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
               <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/></svg></a>
@@ -559,7 +573,9 @@ function updateStickyTails() {
     const headTop = parseFloat(hs.top) || 0;
     const headBox = head.offsetHeight + (parseFloat(hs.marginBottom) || 0);
     const cardTop = ls.position === "sticky" ? (parseFloat(ls.top) || 0) : headTop + headBox;
-    const d = tiles.getBoundingClientRect().bottom - last.getBoundingClientRect().top;
+    // Measured from sizes (not positions) and excluding the trailing hold space, so the last card's
+    // own sticky offset can never feed back into the result.
+    const d = last.offsetHeight + (parseFloat(ls.marginBottom) || 0) + (parseFloat(getComputedStyle(tiles).paddingBottom) || 0);
     const tail = Math.max(0, Math.round((cardTop + d - headTop - headBox) * 100) / 100) + "px";
     if (view.style.getPropertyValue("--tail") !== tail) view.style.setProperty("--tail", tail);
   });
@@ -621,11 +637,11 @@ function setStatus(text, isError) {
 contactForm.addEventListener("submit", e => {
   e.preventDefault();
   const f = contactForm.elements;
-  const name = f.name.value.trim(), email = f.email.value.trim(), msg = f.message.value.trim();
-  if (!name || !email || !msg) { setStatus("Please fill the form", true); return; }
+  const name = f.name.value.trim(), email = f.email.value.trim(), looking = f.looking_for.value, msg = f.message.value.trim();
+  if (!name || !email || !looking || !msg) { setStatus("Please fill the form", true); return; }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setStatus("Please enter a valid email address", true); return; }
   setStatus("", false);
-  const text = `Hi Arshad, I found you through your portfolio.\n\nName: ${name}\nEmail: ${email}\nMessage: ${msg}`;
+  const text = `Hi Arshad, I found you through your portfolio.\n\nName: ${name}\nEmail: ${email}\nLooking for: ${looking}\nMessage: ${msg}`;
   const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
   const w = window.open(url, "_blank");
   if (w) w.opener = null; else window.location.href = url;
