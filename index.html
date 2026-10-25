@@ -69,8 +69,8 @@ a { color: inherit; }
   overflow: hidden;
 }
 .rail-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.brand { font-family: var(--serif); font-weight: 400; font-size: 22px; letter-spacing: .06em; text-transform: uppercase; text-decoration: none; white-space: nowrap; }
-.burger { width: 34px; height: 28px; border: 0; border-radius: 4px; background: transparent; padding: 5px 0; cursor: pointer; display: grid; align-content: space-between; flex: none; transition: background .2s, transform .2s; }
+.brand { font-family: var(--serif); font-weight: 600; font-size: 22px; letter-spacing: .06em; text-transform: uppercase; text-decoration: none; white-space: nowrap; }
+.burger { width: 34px; height: 28px; border: 0; border-radius: 12px; background: transparent; padding: 5px 0; cursor: pointer; display: grid; align-content: space-between; flex: none; transition: background .2s, transform .2s; }
 .burger:hover { transform: scale(.96); }
 .burger:focus-visible { outline: 2px solid var(--ink); outline-offset: 5px; }
 .burger span { display: block; height: 3px; width: 100%; background: var(--ink); transition: transform .3s ease, opacity .2s ease, width .2s ease; }
@@ -105,32 +105,42 @@ a { color: inherit; }
 .view { animation: rise .45s ease both; }
 .view[hidden] { display: none !important; }
 @keyframes rise { from { transform: translateY(10px); opacity: .4; } to { transform: none; opacity: 1; } }
-.eyebrow { font-family: var(--sans); color: #121211; margin: 0 0 36px; font-weight: 600; font-size: 15px; letter-spacing: .06em; text-transform: uppercase; }
+.eyebrow { font-family: var(--serif); color: #121211; margin: 0 0 36px; font-weight: 400; font-size: clamp(36px, 3.6vw, 52px); line-height: 1.05; letter-spacing: 0; text-transform: none; }
+/* Section headings stay pinned while the cards scroll beneath, then leave with the final card (see updateStickyTails). */
+.view > .eyebrow { position: sticky; top: 0; z-index: 12; background: var(--stage); padding: 8px 0 12px; margin-left: clamp(0px, 4vw, 54px); }
+#view-projects, #view-service { padding-bottom: var(--tail, 0px); }
+#view-projects .tiles, #view-service .tiles { margin-bottom: calc(var(--tail, 0px) * -1); }
 
 /* Myself */
 .hero { min-height: calc(100vh - 140px); display: grid; place-content: center; text-align: center; gap: 28px; max-width: 780px; margin: 0 auto; }
-.hero h1 { color: #FB6203; margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(56px, 7vw, 104px); line-height: .95; letter-spacing: -.01em; text-wrap: balance; }
+.hero h1 { color: #000; margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(56px, 7vw, 104px); line-height: .95; letter-spacing: -.01em; text-wrap: balance; }
 .hero h1 em { font-style: italic; }
-.hero .role { margin: 0; font-size: clamp(19px, 1.6vw, 24px); font-weight: 400; color: var(--ink); }
+.hero .role { margin: 0; font-size: clamp(19px, 1.6vw, 24px); font-weight: 400; color: #000; }
 .hero .pitch { margin: 0 auto; max-width: 58ch; font-size: clamp(17px, 1.4vw, 21px); font-weight: 300; color: #121211; text-wrap: balance; }
 .hero .ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
-.btn { display: inline-flex; align-items: center; justify-content: center; padding: 14px 24px; border: 1.5px solid var(--ink); background: transparent; font-weight: 600; font-size: 15px; letter-spacing: .04em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: background .2s, color .2s; }
+.btn { border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; padding: 14px 24px; border: 1.5px solid var(--ink); background: transparent; font-weight: 600; font-size: 15px; letter-spacing: .04em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: background .2s, color .2s; }
 .btn:hover { background: var(--ink); color: var(--stage); }
 .btn.solid { background: var(--invert-bg); color: var(--invert-fg); border-color: var(--invert-bg); }
 .btn.solid:hover { background: transparent; color: var(--ink); }
 
 /* Grid of tiles (Projects, Services) */
 .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: 1000px; margin-left: clamp(0px, 4vw, 54px); }
-.tile { position: relative; aspect-ratio: 489 / 445; max-width: 100%; background: var(--tile); overflow: hidden; display: flex; align-items: flex-end; padding: 24px; transition: background .3s; }
+.tile { position: relative; aspect-ratio: 489 / 445; max-width: 100%; background: var(--tile); overflow: hidden; border-radius: 12px; display: flex; align-items: flex-end; padding: 24px; transition: background .3s; }
 .tile:hover { background: var(--tile-hover); }
 .tile .art { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
 .tile .art span { font-family: var(--serif); font-style: italic; font-size: clamp(64px, 9vw, 150px); line-height: 1; color: var(--ink); opacity: .09; transition: opacity .35s, transform .5s; }
 .tile:hover .art span { opacity: .18; transform: scale(1.04); }
 .tile .meta { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; }
-.tile h3 { margin: 0; font-family: var(--sans); font-weight: 600; font-size: clamp(18px, 2vw, 32px); line-height: 1.15; min-width: 0; }
-.tile .tag { display: block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-.see { flex: none; border: 0; background: var(--chip); color: #0d0d0d; font-weight: 700; font-size: 17px; padding: 12px 30px; cursor: pointer; transition: background .2s, color .2s; }
+.tile h3 { margin: 0; font-family: var(--serif); font-weight: 400; color: #000; font-size: clamp(26px, 2.8vw, 40px); line-height: 1.1; min-width: 0; }
+.tile .tag { display: block; font-family: var(--sans); font-weight: 600; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.see { flex: none; border: 0; border-radius: 12px; background: var(--chip); color: #0d0d0d; font-family: var(--serif); font-weight: 400; font-size: 21px; line-height: 1.2; padding: 12px 30px; cursor: pointer; transition: background .2s, color .2s; }
 .see:hover { background: var(--invert-bg); color: var(--invert-fg); }
+/* Project "See" buttons: orange accent with white text (hover swaps to the light chip so it still reads as interactive) */
+#project-tiles .see { background: var(--ink); color: #fff; }
+#project-tiles .see:hover { background: var(--chip); color: var(--ink); }
+/* Final card + its button carry no shadow */
+#project-tiles .tile:last-child, #service-tiles .tile:last-child,
+#project-tiles .tile:last-child .see, #service-tiles .tile:last-child .see { box-shadow: none; filter: none; }
 
 /* Contact */
 .contact { max-width: 1000px; margin: 0 auto; padding-top: 6vh; }
@@ -140,23 +150,25 @@ a { color: inherit; }
 form { margin-top: 64px; display: grid; gap: 30px; }
 .field { display: grid; grid-template-columns: 150px minmax(0, 1fr); align-items: end; gap: 24px; }
 .field label { font-family: var(--sans); font-weight: 600; font-size: clamp(17px, 1.5vw, 22px); text-transform: uppercase; letter-spacing: .02em; white-space: nowrap; }
-.field input, .field textarea { width: 100%; border: 0; border-bottom: 1.5px solid var(--line); background: transparent; padding: 6px 2px; font-size: 18px; border-radius: 0; resize: none; }
+.field input, .field textarea { font-weight: 400; width: 100%; border: 0; border-bottom: 1.5px solid var(--line); background: transparent; padding: 6px 2px; font-size: 18px; border-radius: 0; resize: none; }
 .field textarea { min-height: 36px; field-sizing: content; max-height: 220px; }
 .field input:focus, .field textarea:focus { outline: none; border-bottom-width: 3px; }
 .form-foot { margin-top: 70px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
 .socials { display: flex; gap: 44px; flex-wrap: wrap; }
-.socials a { width: 56px; height: 56px; background: var(--tile); display: grid; place-items: center; font-size: 14px; font-weight: 700; letter-spacing: .04em; text-decoration: none; transition: background .2s, color .2s; }
+.socials a { color: #000; width: 56px; height: 56px; background: var(--tile); display: grid; place-items: center; font-size: 14px; font-weight: 700; letter-spacing: .04em; text-decoration: none; transition: background .2s, color .2s; }
+.socials a svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
 .socials a:hover { background: var(--invert-bg); color: var(--invert-fg); }
-.submit { border: 0; background: var(--invert-bg); color: var(--invert-fg); font-size: 22px; letter-spacing: .02em; padding: 14px 24px; cursor: pointer; transition: transform .2s; }
+.submit { border: 0; border-radius: 12px; background: var(--invert-bg); color: var(--invert-fg); font-size: 22px; letter-spacing: .02em; padding: 14px 24px; cursor: pointer; transition: transform .2s; }
 .submit:hover { transform: translateY(-2px); }
 .status { min-height: 1.5em; margin: 0; font-size: 15px; color: var(--ink-soft); }
+.status.error { color: #D92D20; }
 
 /* Detail drawer for "See" */
 .drawer { position: fixed; inset: 0; z-index: 30; display: grid; justify-items: end; background: rgba(0,0,0,.35); }
 .drawer[hidden] { display: none !important; }
 .drawer .panel { width: min(520px, 100%); height: 100%; overflow-y: auto; background: var(--stage); color: var(--ink); padding: 40px max(32px, env(safe-area-inset-right, 0px)) 40px 32px; animation: slide .35s ease both; display: flex; flex-direction: column; gap: 22px; }
 @keyframes slide { from { transform: translateX(40px); opacity: .5; } to { transform: none; opacity: 1; } }
-.panel .close { align-self: flex-end; border: 0; background: none; font-size: 15px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
+.panel .close { align-self: flex-end; border: 0; border-radius: 12px; background: none; font-size: 15px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
 .panel .cover { aspect-ratio: 16 / 10; max-width: 100%; background: var(--tile); display: grid; place-items: center; font-family: var(--serif); font-style: italic; font-size: 96px; color: var(--muted); }
 .panel h3 { margin: 0; color: #121211; font-family: var(--serif); font-weight: 400; font-size: 48px; line-height: 1; }
 .panel p { margin: 0; color: #121211; font-weight: 300; font-size: 18px; }
@@ -184,9 +196,12 @@ form { margin-top: 64px; display: grid; gap: 30px; }
   /* Section headings stay pinned while each card sequence passes beneath them. */
   body.mobile-scroll-mode .view > .eyebrow {
     position: sticky; top: 106px; z-index: 12;
-    padding: 8px 0 12px; margin: 0 0 18px;
+    padding: 4px 0; margin: 0 0 18px;
+    font-size: clamp(28px, 8vw, 34px); line-height: 1.1;
     background: var(--stage);
   }
+  body.mobile-scroll-mode #view-projects,
+  body.mobile-scroll-mode #view-service { padding-bottom: calc(54px + var(--tail, 0px)); }
   body.mobile-scroll-mode #project-tiles,
   body.mobile-scroll-mode #service-tiles {
     display: block; position: relative; padding-bottom: 8px;
@@ -205,6 +220,11 @@ form { margin-top: 64px; display: grid; gap: 30px; }
   body.mobile-scroll-mode #service-tiles .tile:nth-child(3) { z-index: 3; }
   body.mobile-scroll-mode #project-tiles .tile:nth-child(4),
   body.mobile-scroll-mode #service-tiles .tile:nth-child(4) { z-index: 4; }
+  /* Last card: no shadow on the card or its button */
+  body.mobile-scroll-mode #project-tiles .tile:last-child,
+  body.mobile-scroll-mode #service-tiles .tile:last-child,
+  body.mobile-scroll-mode #project-tiles .tile:last-child .see,
+  body.mobile-scroll-mode #service-tiles .tile:last-child .see { box-shadow: none; filter: none; }
   body.mobile-scroll-mode #view-contact { min-height: auto; padding-bottom: 30px; }
   body.mobile-scroll-mode .contact { padding-top: 12px; }
   body.mobile-scroll-mode form { gap: 26px; margin-top: 42px; }
@@ -253,7 +273,7 @@ form { margin-top: 64px; display: grid; gap: 30px; }
 @media (max-width: 560px) {
   .tiles { grid-template-columns: minmax(0, 1fr); }
   .tile { aspect-ratio: 4 / 3; padding: 18px; }
-  .see { padding: 10px 22px; font-size: 15px; }
+  .see { padding: 10px 22px; font-size: 19px; }
 }
 
 @media (max-width: 380px) {
@@ -324,10 +344,10 @@ form { margin-top: 64px; display: grid; gap: 30px; }
           <p class="status" id="status" role="status"></p>
           <div class="form-foot">
             <div class="socials">
-              <a href="https://www.behance.net/" target="_blank" rel="noopener" aria-label="Behance">Bē</a>
-              <a href="https://dribbble.com/" target="_blank" rel="noopener" aria-label="Dribbble">Dr</a>
-              <a href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
-              <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">Ig</a>
+              <a href="https://www.behance.net/" target="_blank" rel="noopener" aria-label="Behance"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.5h6a3 3 0 0 1 0 6h-6z"/><path d="M2.5 11.5h7a3.25 3.25 0 0 1 0 6.5h-7z"/><path d="M14.5 6h6"/><path d="M21.2 14.8h-6.7a3 3 0 1 0 .7 3.3"/></svg></a>
+              <a href="https://dribbble.com/" target="_blank" rel="noopener" aria-label="Dribbble"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M19.13 5.09C15.22 9.14 10 10.44 2.25 10.94"/><path d="M21.75 12.84c-6.62-1.41-12.14 1-16.38 6.32"/><path d="M8.56 2.75c4.37 6 6 9.42 8 17.72"/></svg></a>
+              <a href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
+              <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/></svg></a>
             </div>
             <button class="submit" type="submit">SUBMIT</button>
           </div>
@@ -476,6 +496,44 @@ mobileQuery.addEventListener("change", () => {
   if (mobileQuery.matches) requestAnimationFrame(() => show(active, true));
 });
 
+// Sticky section headings: stay pinned until the final card is reached, then travel up with it.
+// The heading's sticky range (its parent's content box) is shortened by --tail, which is set so the
+// range ends exactly when the last card reaches its resting position. Pure CSS does the scrolling.
+const stickyViews = ["view-projects", "view-service"].map(id => document.getElementById(id));
+function updateStickyTails() {
+  stickyViews.forEach(view => {
+    const head = view.querySelector(":scope > .eyebrow");
+    const tiles = view.querySelector(".tiles");
+    const last = tiles && tiles.lastElementChild;
+    if (!head || !last || !head.offsetHeight) return; // hidden view: measured when it is shown
+    const hs = getComputedStyle(head), ls = getComputedStyle(last);
+    const headTop = parseFloat(hs.top) || 0;
+    const headBox = head.offsetHeight + (parseFloat(hs.marginBottom) || 0);
+    const cardTop = ls.position === "sticky" ? (parseFloat(ls.top) || 0) : headTop + headBox;
+    const d = tiles.getBoundingClientRect().bottom - last.getBoundingClientRect().top;
+    const tail = Math.max(0, Math.round((cardTop + d - headTop - headBox) * 100) / 100) + "px";
+    if (view.style.getPropertyValue("--tail") !== tail) view.style.setProperty("--tail", tail);
+  });
+}
+let tailQueued = false;
+function queueStickyTails() {
+  if (tailQueued) return;
+  tailQueued = true;
+  requestAnimationFrame(() => { tailQueued = false; updateStickyTails(); });
+}
+if ("ResizeObserver" in window) {
+  const tailObserver = new ResizeObserver(queueStickyTails);
+  stickyViews.forEach(view => {
+    tailObserver.observe(view.querySelector(".eyebrow"));
+    const tiles = view.querySelector(".tiles");
+    tailObserver.observe(tiles);
+    if (tiles.lastElementChild) tailObserver.observe(tiles.lastElementChild);
+  });
+}
+window.addEventListener("resize", queueStickyTails, { passive: true });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(queueStickyTails);
+queueStickyTails();
+
 // Burger: opens the menu on mobile, collapses the rail on desktop
 burger.addEventListener("click", () => {
   const mobile = matchMedia("(max-width: 820px)").matches;
@@ -503,17 +561,26 @@ document.getElementById("d-close").addEventListener("click", closeDrawer);
 drawer.addEventListener("click", e => { if (e.target === drawer) closeDrawer(); });
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeDrawer(); });
 
-// Contact form (not connected to a mail service yet)
-document.getElementById("contact-form").addEventListener("submit", e => {
+// Contact form: validate, then open WhatsApp with a pre-filled message (user reviews and sends manually)
+const WHATSAPP_NUMBER = "916383316971";
+const contactForm = document.getElementById("contact-form");
+const statusEl = document.getElementById("status");
+function setStatus(text, isError) {
+  statusEl.textContent = text;
+  statusEl.classList.toggle("error", !!isError);
+}
+contactForm.addEventListener("submit", e => {
   e.preventDefault();
-  const f = e.target, status = document.getElementById("status");
+  const f = contactForm.elements;
   const name = f.name.value.trim(), email = f.email.value.trim(), msg = f.message.value.trim();
-  if (!name || !msg || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    status.textContent = "Please add your name, a valid email and a short message.";
-    return;
-  }
-  status.textContent = `Thanks, ${name}. This form isn’t connected to an inbox yet.`;
-  f.reset();
+  if (!name || !email || !msg) { setStatus("Please fill the form", true); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setStatus("Please enter a valid email address", true); return; }
+  setStatus("", false);
+  const text = `Hi Arshad, I found you through your portfolio.\n\nName: ${name}\nEmail: ${email}\nMessage: ${msg}`;
+  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+  const w = window.open(url, "_blank");
+  if (w) w.opener = null; else window.location.href = url;
+  contactForm.reset();
 });
 </script>
 </body>
