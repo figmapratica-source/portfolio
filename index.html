@@ -147,11 +147,11 @@ a { color: inherit; }
 .contact h2 { color: #121211; margin: 0 auto; text-align: center; font-family: var(--serif); font-weight: 400; font-size: clamp(40px, 4.6vw, 68px); line-height: 1; text-wrap: balance; max-width: 14ch; }
 .contact h2 em { font-style: italic; }
 .contact .lede { margin: 22px auto 0; text-align: center; max-width: 44ch; font-size: clamp(17px, 1.4vw, 21px); font-weight: 300; color: #121211; text-wrap: balance; }
-form { margin-top: 64px; display: grid; gap: 30px; }
-.field { display: grid; grid-template-columns: 150px minmax(0, 1fr); align-items: end; gap: 24px; }
-.field label { font-family: var(--sans); font-weight: 600; font-size: clamp(17px, 1.5vw, 22px); text-transform: uppercase; letter-spacing: .02em; white-space: nowrap; }
-.field input, .field textarea, .field select { font-weight: 400; width: 100%; border: 0; border-bottom: 1.5px solid var(--line); background: transparent; padding: 6px 2px; font-size: 18px; border-radius: 0; resize: none; }
-.field textarea { min-height: 36px; field-sizing: content; max-height: 220px; }
+form { margin-top: 64px; display: grid; gap: 24px; }
+.field { display: grid; grid-template-columns: 150px minmax(0, 1fr); align-items: start; gap: 16px 20px; }
+.field label { display: flex; align-items: center; min-height: 46px; padding: 0 16px; border-radius: 8px; background: rgba(18,18,17,.05); color: #121211; font-family: var(--sans); font-weight: 600; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+.field input, .field textarea, .field select { font-weight: 400; width: 100%; border: 0; border-bottom: 1.5px solid var(--line); background: transparent; padding: 10px 2px; min-height: 46px; font-size: 18px; border-radius: 0; resize: none; }
+.field textarea { min-height: 46px; field-sizing: content; max-height: 220px; }
 .field select { -webkit-appearance: none; appearance: none; padding-right: 30px; cursor: pointer; text-overflow: ellipsis; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23121211' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 4px center; background-size: 16px; }
 .field select option { color: #121211; background: #fff; }
 .field input:focus, .field textarea:focus, .field select:focus { outline: none; border-bottom-width: 3px; }
@@ -165,18 +165,58 @@ form { margin-top: 64px; display: grid; gap: 30px; }
 .status { min-height: 1.5em; margin: 0; font-size: 15px; color: var(--ink-soft); }
 .status.error { color: #D92D20; }
 
-/* Detail drawer for "See" */
-.drawer { position: fixed; inset: 0; z-index: 30; display: grid; justify-items: end; background: rgba(0,0,0,.35); }
+/* Detail panel for "See": info sidebar on the left, media on the right */
+.drawer { position: fixed; inset: 0; z-index: 30; display: grid; place-items: center; padding: max(24px, env(safe-area-inset-top, 0px)) max(24px, env(safe-area-inset-right, 0px)) max(24px, env(safe-area-inset-bottom, 0px)) max(24px, env(safe-area-inset-left, 0px)); background: rgba(0,0,0,.35); }
 .drawer[hidden] { display: none !important; }
-.drawer .panel { width: min(520px, 100%); height: 100%; overflow-y: auto; background: var(--stage); color: var(--ink); padding: 40px max(32px, env(safe-area-inset-right, 0px)) 40px 32px; animation: slide .35s ease both; display: flex; flex-direction: column; gap: 22px; }
-@keyframes slide { from { transform: translateX(40px); opacity: .5; } to { transform: none; opacity: 1; } }
-.panel .close { align-self: flex-end; border: 0; border-radius: 12px; background: none; font-size: 15px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
-.panel .cover { aspect-ratio: 16 / 10; max-width: 100%; background: var(--tile); display: grid; place-items: center; font-family: var(--serif); font-style: italic; font-size: 96px; color: var(--muted); }
-.panel h3 { margin: 0; color: #121211; font-family: var(--serif); font-weight: 400; font-size: 48px; line-height: 1; }
-.panel p { margin: 0; color: #121211; font-weight: 300; font-size: 18px; }
-.panel dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 10px 24px; font-size: 15px; }
-.panel dt { color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-size: 12px; padding-top: 3px; }
-.panel dd { margin: 0; }
+.drawer .panel { position: relative; width: min(1080px, 100%); height: min(760px, 100%); display: grid; grid-template-columns: minmax(280px, 380px) minmax(0, 1fr); background: var(--stage); color: var(--ink); border-radius: 12px; overflow: hidden; animation: slide .35s ease both; }
+@keyframes slide { from { transform: translateY(14px); opacity: .5; } to { transform: none; opacity: 1; } }
+.panel .close { position: absolute; top: 14px; right: 14px; z-index: 6; width: 40px; height: 40px; border: 0; border-radius: 12px; background: var(--stage); color: #121211; font-size: 16px; font-weight: 700; cursor: pointer; display: grid; place-items: center; transition: background .2s; }
+.panel .close:hover { background: var(--tile); }
+.p-info { min-width: 0; overflow-y: auto; padding: 40px 32px 32px; display: flex; flex-direction: column; gap: 18px; }
+.p-tag { margin: 0; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.p-tag:empty { display: none; }
+.panel h3 { margin: 0; color: #121211; font-family: var(--serif); font-weight: 400; font-size: 46px; line-height: 1; }
+.panel .p-text { margin: 0; color: #121211; font-weight: 300; font-size: 17px; line-height: 1.55; }
+.p-tabs { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.p-tabs li { display: flex; flex-direction: column; gap: 2px; padding: 8px 12px; border-radius: 8px; background: var(--tile); color: #121211; font-size: 14px; line-height: 1.3; }
+.p-tabs li span { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); opacity: .6; }
+.p-media { min-width: 0; overflow-y: auto; padding: 16px 16px 16px 0; }
+.p-cover { min-height: 100%; display: grid; place-items: center; padding: 20px; border-radius: 12px; background: var(--tile); }
+.p-cover img { display: block; max-width: 100%; max-height: min(680px, 100svh - 120px); width: auto; height: auto; border-radius: 8px; }
+.ph { width: 100%; display: grid; place-items: center; border-radius: 8px; background: var(--tile-hover); overflow: hidden; }
+.ph span { font-family: var(--serif); font-style: italic; font-size: clamp(48px, 8vw, 96px); line-height: 1; color: var(--ink); opacity: .25; }
+.p-cover .ph { max-width: 560px; }
+.gallery { column-width: 210px; column-gap: 12px; }
+.work { margin: 0 0 12px; break-inside: avoid; }
+.work img { display: block; width: 100%; height: auto; border-radius: 8px; background: var(--tile); }
+.work figcaption { display: flex; justify-content: space-between; gap: 8px; padding: 6px 2px 0; font-size: 13px; color: #121211; }
+.work figcaption em { font-style: normal; color: var(--muted); opacity: .6; }
+.p-empty { padding: 40px 12px; text-align: center; color: #121211; font-weight: 300; }
+
+/* Multi-select dropdown (Graphic Design) */
+.ms { position: relative; margin-top: 4px; }
+.ms[hidden] { display: none; }
+.ms-label { display: block; margin-bottom: 8px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); opacity: .6; }
+.ms-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 14px; border: 0; border-radius: 8px; background: var(--tile); color: #121211; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; transition: background .2s; }
+.ms-btn:hover { background: var(--tile-hover); }
+.ms-btn::after { content: ""; flex: none; width: 16px; height: 16px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23121211' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / 16px no-repeat; transition: transform .2s; }
+.ms-btn[aria-expanded="true"]::after { transform: rotate(180deg); }
+.ms-menu { position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 5; max-height: 260px; overflow-y: auto; padding: 6px; border-radius: 8px; background: #fff; box-shadow: 0 12px 32px rgba(18,18,17,.14); }
+.ms-menu[hidden] { display: none; }
+.ms-opt { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 6px; color: #121211; font-size: 15px; font-weight: 600; cursor: pointer; }
+.ms-opt:hover { background: var(--tile); }
+.ms-opt input { width: 16px; height: 16px; margin: 0; accent-color: #FB6203; cursor: pointer; }
+@media (max-width: 820px) {
+  .drawer { padding: 0; place-items: end center; }
+  .drawer .panel { width: 100%; height: auto; max-height: 92svh; grid-template-columns: minmax(0, 1fr); overflow-y: auto; border-radius: 12px 12px 0 0; }
+  .p-info { overflow: visible; padding: 24px 64px 8px 20px; gap: 14px; }
+  .panel h3 { font-size: 38px; }
+  .p-media { overflow: visible; padding: 8px 16px max(20px, env(safe-area-inset-bottom, 0px)); }
+  .panel:not(.has-gallery) .p-media { order: -1; padding: 16px 16px 0; }
+  .panel:not(.has-gallery) .p-info { padding-top: 20px; padding-bottom: max(24px, env(safe-area-inset-bottom, 0px)); }
+  .p-cover { min-height: 220px; padding: 14px; }
+  .p-cover img { max-height: 55svh; }
+}
 
 /* Mobile-only scroll experience. Desktop styles and view switching remain unchanged. */
 @media (max-width: 820px) {
@@ -212,7 +252,7 @@ form { margin-top: 64px; display: grid; gap: 30px; }
   body.mobile-scroll-mode #project-tiles .tile,
   body.mobile-scroll-mode #service-tiles .tile {
     position: sticky; top: calc(158px + var(--n, 0) * 12px); margin: 0;
-    aspect-ratio: 4 / 3; min-height: 200px; max-height: calc(100svh - 158px - 36px - 28px);
+    aspect-ratio: auto; height: calc(100svh - 158px - 36px - 28px); min-height: 260px;
     box-shadow: 0 8px 24px rgba(18,18,17,.06);
     outline: 1px solid rgba(18,18,17,.07); outline-offset: -1px;
     transform-origin: center top;
@@ -277,7 +317,8 @@ form { margin-top: 64px; display: grid; gap: 30px; }
   .stage { padding-block: 124px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
   .hero { min-height: calc(78svh - 40px); }
   .tiles { margin-left: 0; }
-  .field { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .field { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .field label { justify-self: start; min-height: 34px; }
   .socials { gap: 14px; }
 }
 @media (max-width: 560px) {
@@ -338,14 +379,14 @@ form { margin-top: 64px; display: grid; gap: 30px; }
   .drawer { z-index: 60; }
 
   /* Pinned section heading, aligned with the card column */
-  .view > .eyebrow { top: var(--bar-h); font-size: var(--head-fs); line-height: 1.05; padding: 8px 0 18px; margin: 0 auto; max-width: 1000px; }
+  .view > .eyebrow { top: var(--bar-h); font-size: var(--head-fs); line-height: 1.05; padding: 8px 0 18px; margin: 0 auto; max-width: 1120px; }
   #view-projects, #view-service { padding-bottom: calc(80px + var(--tail, 0px)); }
 
   /* Cards stack one after another while scrolling */
-  #project-tiles, #service-tiles { display: block; position: relative; padding-bottom: 8px; margin-inline: auto; }
+  #project-tiles, #service-tiles { display: block; position: relative; padding-bottom: 8px; margin-inline: auto; max-width: 1120px; }
   #project-tiles .tile, #service-tiles .tile {
     position: sticky; top: calc(var(--bar-h) + var(--head-h) + var(--n, 0) * 16px); margin: 0; padding: 28px;
-    aspect-ratio: 16 / 9; min-height: 280px; max-height: calc(100svh - var(--bar-h) - var(--head-h) - 48px - 28px);
+    aspect-ratio: auto; height: calc(100svh - var(--bar-h) - var(--head-h) - 48px - 28px); min-height: 280px;
     box-shadow: 0 8px 24px rgba(18,18,17,.06);
     outline: 1px solid rgba(18,18,17,.07); outline-offset: -1px;
     transform-origin: center top;
@@ -422,10 +463,10 @@ form { margin-top: 64px; display: grid; gap: 30px; }
         <p class="lede">I Design Intuitive Digital Experiences That Look Good And Work Beautifully. Let’s Connect.</p>
         <!-- To receive messages, point this form at a service such as Formspree and remove the preventDefault in the script. -->
         <form id="contact-form" novalidate>
-          <div class="field"><label for="f-name">Name :</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
-          <div class="field"><label for="f-email">Email :</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
-          <div class="field"><label for="f-looking">Looking for :</label><select id="f-looking" name="looking_for" required><option value="" selected disabled hidden></option><option value="Website">Website</option><option value="Shopify Store">Shopify Store</option><option value="Branding">Branding</option><option value="Meta Ads">Meta Ads</option></select></div>
-          <div class="field"><label for="f-msg">Message :</label><textarea id="f-msg" name="message" rows="1" required></textarea></div>
+          <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
+          <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="f-looking">Looking for</label><select id="f-looking" name="looking_for" required><option value="" selected disabled hidden></option><option value="Website">Website</option><option value="Shopify Store">Shopify Store</option><option value="Graphic Design">Graphic Design</option><option value="Meta Ads">Meta Ads</option></select></div>
+          <div class="field"><label for="f-msg">Message</label><textarea id="f-msg" name="message" rows="1" required></textarea></div>
           <p class="status" id="status" role="status"></p>
           <div class="form-foot">
             <div class="socials">
@@ -444,12 +485,20 @@ form { margin-top: 64px; display: grid; gap: 30px; }
 </div>
 
 <div class="drawer" id="drawer" hidden>
-  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="d-title">
-    <button class="close" id="d-close" type="button">✕</button>
-    <div class="cover" id="d-cover"></div>
-    <h3 id="d-title"></h3>
-    <p id="d-body"></p>
-    <dl id="d-meta"></dl>
+  <div class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="d-title">
+    <button class="close" id="d-close" type="button" aria-label="Close">✕</button>
+    <aside class="p-info">
+      <p class="p-tag" id="d-tag"></p>
+      <h3 id="d-title"></h3>
+      <p class="p-text" id="d-body"></p>
+      <ul class="p-tabs" id="d-meta"></ul>
+      <div class="ms" id="d-filter" hidden>
+        <span class="ms-label" id="ms-label">Category</span>
+        <button class="ms-btn" id="ms-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-labelledby="ms-label ms-text"><span id="ms-text">All categories</span></button>
+        <div class="ms-menu" id="ms-menu" role="group" aria-labelledby="ms-label" hidden></div>
+      </div>
+    </aside>
+    <div class="p-media" id="d-media"></div>
   </div>
 </div>
 
@@ -464,7 +513,18 @@ const PROJECTS = [
 const SERVICES = [
   { title: "Shopify Designing", glyph: "S", body: "Custom Shopify themes and storefronts built to convert, from product pages to checkout.", meta: { Includes: "Theme design, setup, product pages", Timeline: "2–4 weeks" } },
   { title: "Meta Ads", glyph: "M", body: "Ad creatives and campaign visuals for Facebook and Instagram that stop the scroll.", meta: { Includes: "Static & motion creatives, A/B sets", Timeline: "Ongoing" } },
-  { title: "Branding", glyph: "B", body: "Visual identities that give a business a clear, memorable look across every touchpoint.", meta: { Includes: "Logo, palette, type, guidelines", Timeline: "3–5 weeks" } },
+  { title: "Graphic Design", glyph: "G", body: "Logos, posters, social creatives and packaging that give a business a clear, memorable look.", meta: { Includes: "Logo, poster, social, packaging", Timeline: "1–3 weeks" },
+    categories: ["Logo", "Poster", "Social Media", "Packaging"],
+    // Add real work with { img: "url", w: width, h: height } — images keep their own ratio (portrait, landscape, vertical).
+    works: [
+      { cat: "Logo", title: "Ember mark", glyph: "E", ratio: "1 / 1" },
+      { cat: "Poster", title: "Oud & Ember", glyph: "O", ratio: "3 / 4" },
+      { cat: "Social Media", title: "Story set", glyph: "S", ratio: "9 / 16" },
+      { cat: "Packaging", title: "Fragrance box", glyph: "P", ratio: "16 / 10" },
+      { cat: "Poster", title: "Studio launch", glyph: "L", ratio: "2 / 3" },
+      { cat: "Social Media", title: "Feed carousel", glyph: "F", ratio: "4 / 5" },
+      { cat: "Logo", title: "Wordmark", glyph: "W", ratio: "3 / 2" }
+    ] },
   { title: "UI UX Design", glyph: "U", body: "Research-led interfaces for web and mobile, from wireframes to polished prototypes.", meta: { Includes: "Research, wireframes, UI, prototype", Timeline: "3–6 weeks" } }
 ];
 
@@ -608,23 +668,71 @@ burger.addEventListener("click", () => {
   burger.setAttribute("aria-expanded", String(target.classList.contains(cls)));
 });
 
-// Detail drawer
+// Detail panel
 const drawer = document.getElementById("drawer");
+const panelEl = document.getElementById("panel");
+const dMedia = document.getElementById("d-media");
+const dFilter = document.getElementById("d-filter");
+const msBtn = document.getElementById("ms-btn");
+const msMenu = document.getElementById("ms-menu");
+const msText = document.getElementById("ms-text");
+let openItem = null;
+const esc = v => String(v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+// Images keep their own aspect ratio (width 100%, height auto); placeholders use the ratio given.
+function figure(w) {
+  const ratio = w.ratio || (w.w && w.h ? w.w + " / " + w.h : "4 / 3");
+  const media = w.img
+    ? `<img src="${esc(w.img)}" alt="${esc(w.title || w.cat)}" loading="lazy" decoding="async"${w.w && w.h ? ` width="${w.w}" height="${w.h}"` : ""}>`
+    : `<div class="ph" style="aspect-ratio:${esc(ratio)}"><span>${esc(w.glyph || w.cat[0])}</span></div>`;
+  return `<figure class="work">${media}<figcaption>${esc(w.title || "")}<em>${esc(w.cat)}</em></figcaption></figure>`;
+}
+function renderGallery() {
+  const picked = openItem.categories.filter(c => msMenu.querySelector(`input[value="${CSS.escape(c)}"]`).checked);
+  const list = openItem.works.filter(w => picked.includes(w.cat));
+  dMedia.innerHTML = list.length ? `<div class="gallery">${list.map(figure).join("")}</div>` : `<p class="p-empty">Select a category to see work.</p>`;
+  msText.textContent = picked.length === openItem.categories.length ? "All categories" : picked.length === 0 ? "None selected" : picked.length <= 2 ? picked.join(", ") : picked.length + " selected";
+}
+function setMenu(open) {
+  msMenu.hidden = !open;
+  msBtn.setAttribute("aria-expanded", String(open));
+}
+function openPanel(item) {
+  openItem = item;
+  document.getElementById("d-tag").textContent = (item.tag || "").trim();
+  document.getElementById("d-title").textContent = item.title;
+  document.getElementById("d-body").textContent = item.body;
+  document.getElementById("d-meta").innerHTML = Object.entries(item.meta).map(([k, v]) => `<li><span>${esc(k)}</span>${esc(v)}</li>`).join("");
+  const gallery = !!item.works;
+  panelEl.classList.toggle("has-gallery", gallery);
+  dFilter.hidden = !gallery;
+  setMenu(false);
+  if (gallery) {
+    msMenu.innerHTML = item.categories.map(c => `<label class="ms-opt"><input type="checkbox" value="${esc(c)}" checked>${esc(c)}</label>`).join("");
+    renderGallery();
+  } else {
+    dMedia.innerHTML = `<div class="p-cover">${item.img
+      ? `<img src="${esc(item.img)}" alt="${esc(item.title)}">`
+      : `<div class="ph" style="aspect-ratio:${esc(item.ratio || "4 / 3")}"><span>${esc(item.glyph)}</span></div>`}</div>`;
+  }
+  drawer.hidden = false;
+  panelEl.scrollTop = 0; dMedia.scrollTop = 0; panelEl.querySelector(".p-info").scrollTop = 0;
+  document.getElementById("d-close").focus();
+}
 document.addEventListener("click", e => {
   const btn = e.target.closest(".see");
   if (!btn) return;
-  const item = (btn.dataset.group === "project" ? PROJECTS : SERVICES)[btn.dataset.i];
-  document.getElementById("d-cover").textContent = item.glyph;
-  document.getElementById("d-title").textContent = item.title;
-  document.getElementById("d-body").textContent = item.body;
-  document.getElementById("d-meta").innerHTML = Object.entries(item.meta).map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
-  drawer.hidden = false;
-  document.getElementById("d-close").focus();
+  openPanel((btn.dataset.group === "project" ? PROJECTS : SERVICES)[btn.dataset.i]);
 });
-function closeDrawer() { drawer.hidden = true; }
+msBtn.addEventListener("click", () => setMenu(msMenu.hidden));
+msMenu.addEventListener("change", renderGallery);
+document.addEventListener("click", e => { if (!e.target.closest(".ms")) setMenu(false); });
+function closeDrawer() { setMenu(false); drawer.hidden = true; }
 document.getElementById("d-close").addEventListener("click", closeDrawer);
 drawer.addEventListener("click", e => { if (e.target === drawer) closeDrawer(); });
-document.addEventListener("keydown", e => { if (e.key === "Escape") closeDrawer(); });
+document.addEventListener("keydown", e => {
+  if (e.key !== "Escape") return;
+  if (!msMenu.hidden) { setMenu(false); msBtn.focus(); } else closeDrawer();
+});
 
 // Contact form: validate, then open WhatsApp with a pre-filled message (user reviews and sends manually)
 const WHATSAPP_NUMBER = "916383316971";
