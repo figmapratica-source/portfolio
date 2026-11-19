@@ -77,7 +77,7 @@ body.mobile-scroll-mode #project-tiles .tile, body.mobile-scroll-mode #service-t
 /* letter-by-letter blur rise */
 .split .w { display:inline-block; white-space:nowrap; }
 .split .ch { display:inline-block; }
-.split:not(.in) .ch { opacity:0; }
+html.zjs .split:not(.in) .ch { opacity:0; }
 .split.in .ch { animation:zLetter .5s var(--ease) both; animation-delay:calc(var(--i) * .05s); }
 @keyframes zLetter { from { opacity:0; transform:translateY(130%); filter:blur(.2em); } }
 @keyframes zRise { from { opacity:0; transform:translateY(28px); } }
@@ -145,6 +145,8 @@ html.has-cursor, html.has-cursor *, html.has-cursor body * { cursor:none !import
 
   const hero = document.querySelector(".hero h1");
   const go = () => hero.classList.add("in");
+  document.documentElement.classList.add("zjs");
+  setTimeout(() => heads.forEach(h => h.classList.add("in")), 3500); /* fail-safe: never leave text hidden */
   if (reduce) heads.forEach(h => h.classList.add("in"));
   else {
     Promise.race([document.fonts ? document.fonts.load("500 1em 'Mona Sans'") : Promise.resolve(), new Promise(r => setTimeout(r, 1500))]).then(go);
